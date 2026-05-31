@@ -1,0 +1,17 @@
+{
+  "name": "celebnik",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Telegram-first MVP for Celebnik content and response engine.",
+  "scripts": {
+    "check": "node scripts/check_data.js",
+    "ask": "node src/cli.js",
+    "dev": "node src/server.js",
+    "start": "node src/server.js",
+    "demo": "node src/cli.js \"болит желудок\"",
+    "set:webhook": "node scripts/set_webhook.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

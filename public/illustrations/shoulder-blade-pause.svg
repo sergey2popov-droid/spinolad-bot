@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Плечи: лопаточная пауза</title>
+  <desc id="desc">Два кадра: плечи свободно и мягкое движение лопаток назад-вниз.</desc>
+  <rect width="960" height="540" fill="#f8faf7"/>
+  <rect x="48" y="48" width="864" height="444" rx="22" fill="#ffffff" stroke="#d9e7dc" stroke-width="2"/>
+  <text x="80" y="96" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Плечи: лопаточная пауза</text>
+  <text x="80" y="130" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="18">Свести лопатки назад-вниз, будто в задние карманы</text>
+
+  <g transform="translate(96 170)">
+    <rect width="340" height="250" rx="18" fill="#eef7ea"/>
+    <text x="28" y="42" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">1. Плечи свободно</text>
+    <circle cx="170" cy="74" r="30" fill="#f3c9a9" stroke="#2f6f55" stroke-width="5"/>
+    <path d="M170 104 L170 188" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M118 128 Q170 150 222 128" fill="none" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M126 134 L104 198 M214 134 L236 198" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <text x="120" y="226" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="16">шея свободна</text>
+  </g>
+
+  <g transform="translate(524 170)">
+    <rect width="340" height="250" rx="18" fill="#eef7ea"/>
+    <text x="28" y="42" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">2. Назад-вниз</text>
+    <circle cx="170" cy="74" r="30" fill="#f3c9a9" stroke="#2f6f55" stroke-width="5"/>
+    <path d="M170 104 L170 188" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M128 136 Q170 158 212 136" fill="none" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M132 140 L112 198 M208 140 L228 198" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <path d="M116 116 L142 138 M224 116 L198 138" stroke="#5aa27c" stroke-width="5" stroke-linecap="round"/>
+    <path d="M142 138 L130 137 M142 138 L136 128 M198 138 L210 137 M198 138 L204 128" stroke="#5aa27c" stroke-width="4" stroke-linecap="round"/>
+    <text x="102" y="226" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="16">8 мягких повторов</text>
+  </g>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Спина: микропаузa у стены</title>
+  <desc id="desc">Два кадра у стены: встать свободно и сделать пять спокойных выдохов.</desc>
+  <rect width="960" height="540" fill="#f8faf7"/>
+  <rect x="48" y="48" width="864" height="444" rx="22" fill="#ffffff" stroke="#d9e7dc" stroke-width="2"/>
+  <text x="80" y="96" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Спина: микропаузa у стены</text>
+  <text x="80" y="130" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="18">Это пауза от сидения, не тест осанки</text>
+
+  <g transform="translate(96 170)">
+    <rect width="340" height="250" rx="18" fill="#eef7ea"/>
+    <line x1="92" y1="52" x2="92" y2="218" stroke="#b9d3c2" stroke-width="10" stroke-linecap="round"/>
+    <text x="28" y="42" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">1. Встать у стены</text>
+    <circle cx="170" cy="82" r="28" fill="#f3c9a9" stroke="#2f6f55" stroke-width="5"/>
+    <path d="M170 112 L170 186" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M132 132 Q170 148 208 132" fill="none" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M150 236 L166 186 M196 236 L174 186" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <text x="114" y="226" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="16">не тянуть шею</text>
+  </g>
+
+  <g transform="translate(524 170)">
+    <rect width="340" height="250" rx="18" fill="#eef7ea"/>
+    <line x1="92" y1="52" x2="92" y2="218" stroke="#b9d3c2" stroke-width="10" stroke-linecap="round"/>
+    <text x="28" y="42" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">2. 5 спокойных выдохов</text>
+    <circle cx="170" cy="82" r="28" fill="#f3c9a9" stroke="#2f6f55" stroke-width="5"/>
+    <path d="M170 112 L170 186" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M132 132 Q170 148 208 132" fill="none" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M150 236 L166 186 M196 236 L174 186" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <path d="M222 98 C254 98 254 132 222 132" fill="none" stroke="#5aa27c" stroke-width="5" stroke-linecap="round"/>
+    <path d="M222 132 L232 122 M222 132 L234 140" fill="none" stroke="#5aa27c" stroke-width="4" stroke-linecap="round"/>
+    <text x="82" y="226" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="16">60 секунд + короткая ходьба</text>
+  </g>
+</svg>

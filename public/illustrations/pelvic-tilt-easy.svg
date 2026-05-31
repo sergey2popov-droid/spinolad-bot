@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Поясница: наклон таза</title>
+  <desc id="desc">Два кадра лежа: исходное положение и мягкое подкручивание таза.</desc>
+  <rect width="960" height="540" fill="#f7fbf5"/>
+  <rect x="48" y="48" width="864" height="444" rx="22" fill="#ffffff" stroke="#d9e7dc" stroke-width="2"/>
+  <text x="80" y="96" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Поясница: наклон таза</text>
+  <text x="80" y="130" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="18">Маленькое движение таза, не силовое упражнение</text>
+
+  <g transform="translate(96 170)">
+    <rect width="340" height="250" rx="18" fill="#eef7ea"/>
+    <text x="28" y="42" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">1. Лечь и согнуть колени</text>
+    <line x1="58" y1="198" x2="282" y2="198" stroke="#b9d3c2" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="88" cy="148" r="24" fill="#f3c9a9" stroke="#2f6f55" stroke-width="5"/>
+    <path d="M112 158 C160 176 206 176 242 156" fill="none" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M214 160 L244 120 L276 198" fill="none" stroke="#2f6f55" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M142 174 L118 198 M172 176 L170 198" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <text x="106" y="226" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="16">дышать спокойно</text>
+  </g>
+
+  <g transform="translate(524 170)">
+    <rect width="340" height="250" rx="18" fill="#eef7ea"/>
+    <text x="28" y="42" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">2. Мягко подкрутить таз</text>
+    <line x1="58" y1="198" x2="282" y2="198" stroke="#b9d3c2" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="88" cy="148" r="24" fill="#f3c9a9" stroke="#2f6f55" stroke-width="5"/>
+    <path d="M112 158 C160 180 206 174 238 160" fill="none" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M212 162 L246 124 L276 198" fill="none" stroke="#2f6f55" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M142 174 L118 198 M172 176 L170 198" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <path d="M214 138 Q192 164 214 188" fill="none" stroke="#5aa27c" stroke-width="4" stroke-linecap="round"/>
+    <path d="M214 188 L204 178 M214 188 L222 176" fill="none" stroke="#5aa27c" stroke-width="4" stroke-linecap="round"/>
+    <text x="94" y="226" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="16">6-8 раз, без прострела</text>
+  </g>
+</svg>

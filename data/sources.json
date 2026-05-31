@@ -1,0 +1,122 @@
+[
+  {
+    "id": "medline_abdominal_pain",
+    "title": "Abdominal Pain",
+    "organization": "MedlinePlus / U.S. National Library of Medicine",
+    "url": "https://medlineplus.gov/abdominalpain.html",
+    "type": "medical_safety",
+    "notes": "Red flags and when abdominal pain needs medical care."
+  },
+  {
+    "id": "medline_bland_diet",
+    "title": "Bland Diet",
+    "organization": "MedlinePlus",
+    "url": "https://medlineplus.gov/ency/patientinstructions/000068.htm",
+    "type": "medical_self_care",
+    "notes": "Soft food pattern for digestive irritation."
+  },
+  {
+    "id": "nccih_chamomile",
+    "title": "Chamomile",
+    "organization": "NCCIH",
+    "url": "https://www.nccih.nih.gov/health/chamomile",
+    "type": "herb_safety",
+    "notes": "Traditional herb use and allergy/pregnancy cautions."
+  },
+  {
+    "id": "nccih_peppermint",
+    "title": "Peppermint Oil",
+    "organization": "NCCIH",
+    "url": "https://www.nccih.nih.gov/health/peppermint-oil",
+    "type": "herb_safety",
+    "notes": "Peppermint use and reflux-related caution."
+  },
+  {
+    "id": "mayo_flaxseed",
+    "title": "Flaxseed: Is ground better than whole?",
+    "organization": "Mayo Clinic",
+    "url": "https://www.mayoclinic.org/healthy-lifestyle/nutrition-and-healthy-eating/expert-answers/flaxseed/faq-20058354",
+    "type": "food_safety",
+    "notes": "Flaxseed use, fiber, and hydration caution."
+  },
+  {
+    "id": "who_healthy_diet",
+    "title": "Healthy diet",
+    "organization": "World Health Organization",
+    "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+    "type": "public_health",
+    "notes": "General healthy diet principles."
+  },
+  {
+    "id": "medline_blood_glucose",
+    "title": "Blood Glucose",
+    "organization": "MedlinePlus",
+    "url": "https://medlineplus.gov/bloodglucose.html",
+    "type": "medical_safety",
+    "notes": "Blood sugar basics and medical safety."
+  },
+  {
+    "id": "medline_diabetic_diet",
+    "title": "Diabetic Diet",
+    "organization": "MedlinePlus",
+    "url": "https://medlineplus.gov/diabeticdiet.html",
+    "type": "medical_nutrition",
+    "notes": "Eating patterns for blood glucose management."
+  },
+  {
+    "id": "nccih_relaxation",
+    "title": "Relaxation Techniques: What You Need To Know",
+    "organization": "NCCIH",
+    "url": "https://www.nccih.nih.gov/health/relaxation-techniques-what-you-need-to-know",
+    "type": "mind_body",
+    "notes": "Breathing, relaxation response, stress-related evidence."
+  },
+  {
+    "id": "nccih_stress",
+    "title": "Stress",
+    "organization": "NCCIH",
+    "url": "https://www.nccih.nih.gov/health/stress",
+    "type": "mind_body",
+    "notes": "Stress, relaxation, mind-body approaches."
+  },
+  {
+    "id": "ods_iron",
+    "title": "Iron Fact Sheet",
+    "organization": "NIH Office of Dietary Supplements",
+    "url": "https://ods.od.nih.gov/factsheets/Iron-Consumer/",
+    "type": "nutrient",
+    "notes": "Iron, deficiency, food sources, supplement cautions."
+  },
+  {
+    "id": "usda_fdc",
+    "title": "FoodData Central",
+    "organization": "USDA",
+    "url": "https://fdc.nal.usda.gov/",
+    "type": "food_composition",
+    "notes": "Food composition and nutrients."
+  },
+  {
+    "id": "medline_neck_pain",
+    "title": "Neck pain",
+    "organization": "MedlinePlus Medical Encyclopedia",
+    "url": "https://medlineplus.gov/ency/article/003025.htm",
+    "type": "medical_safety",
+    "notes": "Neck pain causes, self-care context, and when to contact a health professional."
+  },
+  {
+    "id": "medline_back_pain",
+    "title": "Back Pain",
+    "organization": "MedlinePlus",
+    "url": "https://medlineplus.gov/backpain.html",
+    "type": "medical_safety",
+    "notes": "Back pain overview and patient safety resources."
+  },
+  {
+    "id": "medline_low_back_pain_acute",
+    "title": "Low back pain - acute",
+    "organization": "MedlinePlus Medical Encyclopedia",
+    "url": "https://medlineplus.gov/ency/article/007425.htm",
+    "type": "medical_self_care",
+    "notes": "Low back pain safety, activity, and self-care boundaries."
+  }
+]

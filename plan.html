@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>План MVP «Целебник»</title>
+  <style>
+    :root {
+      --ink: #16231d;
+      --muted: #64736c;
+      --leaf: #2c7a58;
+      --leaf-dark: #1f533f;
+      --paper: #fffdf7;
+      --line: #d9e1d7;
+      --done: #e5f3df;
+      --todo: #fff4df;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #eef4eb;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 34px;
+    }
+
+    header {
+      padding: 22px;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--leaf-dark);
+    }
+
+    h1, h2, h3 { letter-spacing: 0; }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 780px;
+      color: #d7eadc;
+      line-height: 1.5;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--leaf-dark);
+      background: #fff;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .section {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+    }
+
+    .wide { grid-column: 1 / -1; }
+
+    .next {
+      border-color: #afcfae;
+      background: #f6fbf3;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      color: var(--leaf-dark);
+      font-size: 22px;
+    }
+
+    h3 {
+      margin: 16px 0 8px;
+      font-size: 16px;
+    }
+
+    .muted {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 9px;
+      align-items: start;
+      padding: 9px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      line-height: 1.35;
+    }
+
+    .box {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #b7c8b7;
+      border-radius: 5px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .done {
+      background: var(--done);
+    }
+
+    .done .box {
+      border-color: var(--leaf);
+      background: var(--leaf);
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef2ed;
+      font-family: Consolas, monospace;
+    }
+
+    @media (max-width: 820px) {
+      .grid { grid-template-columns: 1fr; }
+      .wide { grid-column: auto; }
+      h1 { font-size: 25px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>План MVP «Целебник»</h1>
+      <p>Рабочий чеклист проекта: что уже собрано, что делаем сейчас и какой следующий шаг перед запуском Telegram-бота или Mini App.</p>
+      <div class="links">
+        <a class="link" href="public/index.html">Открыть приложение</a>
+        <a class="link" href="visual_mockup.html">Открыть Telegram-мокап</a>
+        <a class="link" href="IMPLEMENTATION_PLAN.md">Markdown-план</a>
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="section wide">
+        <h2>Сделано</h2>
+        <ul class="checklist">
+          <li class="item done"><span class="box">✓</span><span>Название: <b>Целебник / celebnik</b></span></li>
+          <li class="item done"><span class="box">✓</span><span>Слоган: <b>Здоровье и энергия доступные всем</b></span></li>
+          <li class="item done"><span class="box">✓</span><span>3 главных входа: <b>Что болит?</b>, <b>Целебные средства</b>, <b>Упражнения</b></span></li>
+          <li class="item done"><span class="box">✓</span><span>Контентная база: 8 симптом-гайдов, 20 средств, 10 действий/упражнений, 12 источников</span></li>
+          <li class="item done"><span class="box">✓</span><span>API: <code>/health</code>, <code>/api/answer</code>, <code>/api/suggest</code>, <code>/telegram/webhook</code></span></li>
+          <li class="item done"><span class="box">✓</span><span>Telegram-адаптер: <code>/start</code>, <code>/help</code>, <code>/sources</code>, callbacks и ответы на сообщения</span></li>
+          <li class="item done"><span class="box">✓</span><span>Рабочий интерактивный Mini App прототип: <code>public/index.html</code></span></li>
+        </ul>
+      </article>
+
+      <article class="section next">
+        <h2>Текущий этап</h2>
+        <p class="muted">Этап 3: рабочий просмотр приложения поверх нашей JSON-базы.</p>
+        <ul class="checklist">
+          <li class="item done"><span class="box">✓</span><span>Стартовый экран со слоганом и 3 кнопками</span></li>
+          <li class="item done"><span class="box">✓</span><span>Свободный ввод запроса</span></li>
+          <li class="item done"><span class="box">✓</span><span>Подсказки по первым буквам через <code>/api/suggest</code></span></li>
+          <li class="item done"><span class="box">✓</span><span>Ответы через <code>/api/answer</code></span></li>
+          <li class="item done"><span class="box">✓</span><span>Telegram-like выдача: рецепты, продукты, упражнения, осторожность, источники</span></li>
+          <li class="item"><span class="box"></span><span>Проверить визуально в браузере на <code>http://localhost:3000</code></span></li>
+          <li class="item"><span class="box"></span><span>Сделать кнопку "Подобрать из того, что есть дома" внутри ответа</span></li>
+        </ul>
+      </article>
+
+      <article class="section">
+        <h2>Следующий этап</h2>
+        <p class="muted">Этап 4: проверка сценариев и доводка мобильного UX.</p>
+        <ul class="checklist">
+          <li class="item"><span class="box"></span><span>Проверить: <b>болит желудок</b></span></li>
+          <li class="item"><span class="box"></span><span>Проверить: <b>сахар после еды</b></span></li>
+          <li class="item"><span class="box"></span><span>Проверить: <b>лен</b></span></li>
+          <li class="item"><span class="box"></span><span>Проверить: <b>сон</b>, <b>ПМС</b>, <b>упражнения для ног</b></span></li>
+          <li class="item"><span class="box"></span><span>Проверить, что нет обещаний "вылечить" и есть красные флаги</span></li>
+          <li class="item"><span class="box"></span><span>Сжать длинные ответы для экрана телефона</span></li>
+        </ul>
+      </article>
+
+      <article class="section wide">
+        <h2>Технические данные</h2>
+        <h3>Стек</h3>
+        <ul class="checklist">
+          <li class="item done"><span class="box">✓</span><span><b>Node.js</b> для API, Telegram webhook и движка ответов</span></li>
+          <li class="item done"><span class="box">✓</span><span><b>HTML/CSS/JavaScript</b> для Mini App прототипа</span></li>
+          <li class="item done"><span class="box">✓</span><span><b>JSON</b> база: симптомы, средства, упражнения, источники</span></li>
+          <li class="item done"><span class="box">✓</span><span><code>.env.example</code> подготовлен без секретов</span></li>
+        </ul>
+
+        <h3>.env</h3>
+        <ul class="checklist">
+          <li class="item"><span class="box"></span><span><code>TELEGRAM_BOT_TOKEN</code> - токен от BotFather</span></li>
+          <li class="item"><span class="box"></span><span><code>APP_BASE_URL</code> - публичный HTTPS URL</span></li>
+          <li class="item"><span class="box"></span><span><code>DATABASE_URL</code> - будущая база данных, если уйдем от JSON</span></li>
+          <li class="item"><span class="box"></span><span><code>ADMIN_SECRET</code> - защита служебных endpoint'ов</span></li>
+          <li class="item"><span class="box"></span><span><code>NODE_ENV</code> - development или production</span></li>
+        </ul>
+
+        <h3>Команды и деплой</h3>
+        <ul class="checklist">
+          <li class="item done"><span class="box">✓</span><span><code>npm run check</code> - проверка данных</span></li>
+          <li class="item done"><span class="box">✓</span><span><code>npm run ask -- "лен"</code> - проверка движка</span></li>
+          <li class="item done"><span class="box">✓</span><span><code>npm run dev</code> - локальный сервер</span></li>
+          <li class="item"><span class="box"></span><span>Выбрать хостинг: Vercel, Render или Railway</span></li>
+          <li class="item"><span class="box"></span><span>Настроить HTTPS URL для Telegram Mini App</span></li>
+          <li class="item"><span class="box"></span><span>Установить webhook: <code>npm run set:webhook</code></span></li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

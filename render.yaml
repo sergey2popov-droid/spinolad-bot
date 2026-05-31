@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: spinolad-bot
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_BASE_URL
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: ADMIN_SECRET
+        generateValue: true

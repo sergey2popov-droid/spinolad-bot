@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Целебник — Telegram flow</title>
+  <style>
+    :root {
+      --ink: #17201b;
+      --muted: #64726b;
+      --line: #d8ddd6;
+      --leaf: #2f6b4f;
+      --leaf-dark: #1f4b3a;
+      --berry: #9d253d;
+      --paper: #f8f3e8;
+      --bot: #ffffff;
+      --user: #dcf6c8;
+      --chat: #dcead8;
+      --warn: #fff1e9;
+      --warn-line: #b04434;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #edf2ea;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 22px;
+    }
+
+    .intro {
+      max-width: 1180px;
+      margin: 0 auto 18px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .intro h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      max-width: 820px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .flow {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(210px, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+
+    .step {
+      display: grid;
+      gap: 10px;
+    }
+
+    .step-title {
+      min-height: 56px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .step-title strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--leaf-dark);
+      font-size: 14px;
+    }
+
+    .step-title span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .phone {
+      min-height: 560px;
+      border: 7px solid #16221c;
+      border-radius: 28px;
+      overflow: hidden;
+      background: var(--chat);
+      box-shadow: 0 18px 42px rgba(24, 39, 31, .13);
+    }
+
+    .tg-header {
+      height: 58px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #fff;
+      background: var(--leaf-dark);
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--leaf-dark);
+      background: #fff7df;
+      font-size: 20px;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .tg-header h2 {
+      margin: 0 0 2px;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .tg-header p {
+      margin: 0;
+      color: #d7eadc;
+      font-size: 11px;
+    }
+
+    .chat {
+      min-height: 502px;
+      padding: 10px 9px 58px;
+      position: relative;
+      background:
+        linear-gradient(rgba(220, 234, 216, .92), rgba(220, 234, 216, .92)),
+        url("https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=800&q=80");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .msg {
+      max-width: 94%;
+      margin: 7px 0;
+      padding: 9px 10px;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(23, 32, 27, .07);
+      font-size: 13px;
+      line-height: 1.34;
+    }
+
+    .bot {
+      background: var(--bot);
+      border-top-left-radius: 5px;
+    }
+
+    .user {
+      margin-left: auto;
+      background: var(--user);
+      border-top-right-radius: 5px;
+    }
+
+    .msg h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .msg p {
+      margin: 0 0 7px;
+    }
+
+    .msg p:last-child {
+      margin-bottom: 0;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .keyboard {
+      display: grid;
+      gap: 6px;
+      max-width: 94%;
+      margin-top: 7px;
+    }
+
+    .key-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .key {
+      min-height: 36px;
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 7px;
+      color: #fff;
+      background: #4f9a77;
+      font-weight: 700;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .key.secondary {
+      color: var(--leaf-dark);
+      background: #eef7ec;
+      border: 1px solid #cfe3cf;
+    }
+
+    .warn {
+      padding: 8px 9px;
+      border-left: 4px solid var(--warn-line);
+      border-radius: 9px;
+      background: var(--warn);
+      font-size: 12px;
+    }
+
+    .inputbar {
+      position: absolute;
+      left: 9px;
+      right: 9px;
+      bottom: 9px;
+      display: grid;
+      grid-template-columns: 1fr 36px;
+      gap: 7px;
+      padding: 7px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .9);
+    }
+
+    .inputbar span {
+      padding: 9px 10px;
+      border-radius: 17px;
+      color: var(--muted);
+      background: #fff;
+      font-size: 12px;
+    }
+
+    .send {
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--leaf);
+      font-weight: 900;
+    }
+
+    .product {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 8px;
+      align-items: center;
+      margin-top: 7px;
+      padding: 7px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fbfaf5;
+    }
+
+    .product img {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .product strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 12px;
+    }
+
+    .product span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .legend {
+      max-width: 1180px;
+      margin: 18px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .legend-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .legend-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--leaf-dark);
+    }
+
+    .legend-card span {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    @media (max-width: 1160px) {
+      .flow {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 12px; }
+      .flow,
+      .legend {
+        grid-template-columns: 1fr;
+      }
+      .phone { min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="intro">
+      <h1>Целебник в Telegram: по шагам</h1>
+      <p>Ниже не одна длинная прокрутка, а отдельные экраны одного сценария. Так проще понять, что человек увидит сначала, что нажмет дальше и какой ответ получит.</p>
+    </section>
+
+    <section class="flow">
+      <article class="step">
+          <div class="step-title">
+          <strong>Шаг 1. Старт</strong>
+          <span>Бот встречает и дает только 2 главные кнопки.</span>
+        </div>
+        <div class="phone">
+          <div class="tg-header"><div class="avatar">Ц</div><div><h2>Целебник</h2><p>Здоровье и энергия доступные всем</p></div></div>
+          <div class="chat">
+            <div class="msg bot">
+              <h3>Здравствуйте, я Целебник</h3>
+              <p>Помогаю восстанавливать и поддерживать здоровье с помощью продуктов, трав, напитков, народных рецептов, простых действий и современных исследований.</p>
+              <p class="muted">Не ставлю диагнозы и не заменяю врача.</p>
+            </div>
+            <div class="keyboard">
+              <button class="key">Что болит?</button>
+              <div class="key-row">
+                <button class="key">Целебные средства</button>
+                <button class="key">Упражнения</button>
+              </div>
+            </div>
+            <div class="inputbar"><span>Сообщение</span><div class="send">›</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-title">
+          <strong>Шаг 2. Пользователь пишет</strong>
+          <span>Можно нажать кнопку, а можно сразу написать своими словами.</span>
+        </div>
+        <div class="phone">
+          <div class="tg-header"><div class="avatar">Ц</div><div><h2>Целебник</h2><p>Здоровье и энергия доступные всем</p></div></div>
+          <div class="chat">
+            <div class="msg bot">
+              <h3>Что беспокоит?</h3>
+              <p>Напишите коротко: желудок, сахар, сон, стресс, ПМС, энергия.</p>
+              <p class="muted">Подсказки появятся по первым буквам.</p>
+            </div>
+            <div class="keyboard">
+              <div class="key-row">
+                <button class="key secondary">желудок</button>
+                <button class="key secondary">сахар</button>
+              </div>
+              <div class="key-row">
+                <button class="key secondary">сон</button>
+                <button class="key secondary">ПМС</button>
+              </div>
+            </div>
+            <div class="msg user">болит желудок</div>
+            <div class="inputbar"><span>болит желудок</span><div class="send">›</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-title">
+          <strong>Шаг 3. Ответ по боли</strong>
+        <span>Короткая развилка: недавно или продолжается.</span>
+        </div>
+        <div class="phone">
+          <div class="tg-header"><div class="avatar">Ц</div><div><h2>Целебник</h2><p>Здоровье и энергия доступные всем</p></div></div>
+          <div class="chat">
+            <div class="msg bot">
+              <h3>Давние проблемы с желудком</h3>
+              <p><b>Если это повторяется давно:</b> народные средства обычно используют не разово, а курсом: слизистые отвары, мягкие травяные настои и щадящая еда.</p>
+              <p><b>Важно:</b> если боль сильная, ночная, с похудением, кровью, рвотой или черным стулом, сначала нужна медицинская проверка причины.</p>
+            </div>
+            <div class="msg bot">
+              <h3>Что можно делать курсом</h3>
+              <p><b>Утро:</b> овсяный отвар или овсяный кисель небольшими порциями.</p>
+              <p><b>Перед едой:</b> льняная слизь или настой корня алтея как обволакивающий народный вариант.</p>
+              <p><b>После еды:</b> ромашка; мяту добавлять только если нет изжоги.</p>
+              <p><b>Действие:</b> 5-10 минут спокойной ходьбы после еды и теплый компресс на живот, если от тепла легче.</p>
+              <p><b>Еда-основа:</b> гречка, рис, овсянка, легкий суп; временно без кофе, алкоголя, острого и жареного.</p>
+            </div>
+            <div class="msg bot">
+              <h3>Народные рецепты</h3>
+              <p><b>1. Овсяный отвар.</b> 2 ст. л. овса или хлопьев на 500 мл воды. Томить 20-30 минут, процедить. Пить теплым по 50-100 мл 3-5 раз в день, лучше до еды. Курс 7-14 дней.</p>
+              <p><b>2. Льняная слизь.</b> 1 ч. л. льна на 200 мл теплой воды. Настоять 20-30 минут, пить вместе со слизистой водой. Начинать 1 раз в день, не сухими семенами.</p>
+              <p><b>3. Корень алтея.</b> 1 ч. л. сухого корня на стакан прохладной воды, настоять 1-2 часа, процедить. Пить небольшими порциями. Разносить с лекарствами на 2 часа.</p>
+              <p><b>4. Ромашка.</b> 1 ч. л. цветков на 200 мл горячей воды, настоять 10-15 минут. Пить теплой после еды. Не применять при аллергии на астровые.</p>
+              <p class="muted">Формулировка для бота: “традиционно применяют для поддержки слизистой и пищеварительного комфорта”. Не обещаем вылечить гастрит, язву или H. pylori.</p>
+            </div>
+            <div class="msg bot">
+              <h3>Упражнения и действия</h3>
+              <p><b>После еды:</b> 5-10 минут спокойной ходьбы, без наклонов и силовой нагрузки.</p>
+              <p><b>Дыхание:</b> 2-3 минуты медленного дыхания животом: вдох носом, мягкий выдох длиннее вдоха.</p>
+              <p><b>Тепло:</b> теплый компресс на живот на 10-15 минут, если от тепла становится легче.</p>
+              <p><b>Работа с симптомами:</b> 3 дня отмечать, после чего хуже: кофе, острое, молоко, хлеб, большие порции, стресс.</p>
+            </div>
+            <div class="keyboard">
+              <div class="key-row">
+                <button class="key">Подобрать из дома</button>
+                <button class="key secondary">Источники</button>
+              </div>
+              <div class="key-row">
+                <button class="key secondary">Что сейчас</button>
+                <button class="key secondary">Когда к врачу</button>
+              </div>
+            </div>
+            <div class="inputbar"><span>Сообщение</span><div class="send">›</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-title">
+          <strong>Шаг 4. Что есть дома</strong>
+          <span>Это не обязательный шаг, а уточнение после ответа.</span>
+        </div>
+        <div class="phone">
+          <div class="tg-header"><div class="avatar">Ц</div><div><h2>Целебник</h2><p>Здоровье и энергия доступные всем</p></div></div>
+          <div class="chat">
+            <div class="msg bot">
+              <h3>Напишите, что есть дома</h3>
+              <p>Можно через запятую: крупы, травы, напитки, продукты.</p>
+            </div>
+            <div class="msg user">гречка, кефир, ромашка, лен, кофе</div>
+            <div class="msg bot">
+              <h3>Подбор при желудке</h3>
+              <p><b>Подходит мягко:</b> гречка, ромашка.</p>
+              <p><b>Осторожно:</b> лен начать с малого и с водой; кефир только если переносится.</p>
+              <p><b>Лучше не сегодня:</b> кофе.</p>
+            </div>
+            <div class="keyboard">
+              <button class="key">Показать рецепт мягкого ужина</button>
+              <button class="key secondary">Почему кофе не сегодня?</button>
+            </div>
+            <div class="inputbar"><span>Сообщение</span><div class="send">›</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-title">
+          <strong>Шаг 5. Рекомендация по сахару</strong>
+          <span>Внутри ответа: еда, действие, механизм и осторожность.</span>
+        </div>
+        <div class="phone">
+          <div class="tg-header"><div class="avatar">Ц</div><div><h2>Целебник</h2><p>Здоровье и энергия доступные всем</p></div></div>
+          <div class="chat">
+            <div class="msg user">скачет сахар после еды</div>
+            <div class="msg bot">
+              <h3>Упражнение и действие</h3>
+              <p><b>10 минут медленной ходьбы после сладкой или плотной еды.</b></p>
+              <p>Мышцы начинают забирать часть глюкозы из крови для работы. Поэтому после еды это может поддержать более ровную энергию и меньший “сахарный откат”.</p>
+              <div class="product">
+                <img alt="Ходьба" src="https://images.unsplash.com/photo-1487956382158-bb926046304a?auto=format&fit=crop&w=200&q=80">
+                <div><strong>Как делать</strong><span>через 10-30 минут после еды, спокойно, без бега; можно дома по комнате</span></div>
+              </div>
+              <div class="product">
+                <img alt="Дыхание" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=200&q=80">
+                <div><strong>Если стресс</strong><span>1 минута: вдох 4 сек, выдох 8 сек, 5 циклов; длинный выдох включает режим успокоения</span></div>
+              </div>
+              <p class="muted">При диабете, лекарствах от сахара, боли в груди или сильной слабости — не экспериментировать, согласовать с врачом.</p>
+            </div>
+            <div class="keyboard">
+              <div class="key-row">
+                <button class="key secondary">Еще приемы</button>
+                <button class="key secondary">Источники</button>
+              </div>
+            </div>
+            <div class="inputbar"><span>Сообщение</span><div class="send">›</div></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="legend">
+      <div class="legend-card"><strong>Главный принцип</strong><span>Основные входы: «Что болит?», «Целебные средства» и «Упражнения». Но ответы не изолируются: упражнения идут вместе с рецептами, продуктами и осторожностью.</span></div>
+      <div class="legend-card"><strong>Что важно убрать</strong><span>Не перегружать экран картинками и длинным текстом. В Telegram это быстро становится непонятным.</span></div>
+      <div class="legend-card"><strong>Что делать дальше</strong><span>Собрать такие же цепочки для сахара, сна, стресса, ПМС, женской энергии и мужской энергии. В каждую добавить не только еду и травы, но и простые действия/упражнения.</span></div>
+    </section>
+  </main>
+</body>
+</html>

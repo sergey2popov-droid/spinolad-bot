@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Шея: малая амплитуда</title>
+  <desc id="desc">Два кадра с нейтральным взрослым человеком: исходное положение и мягкий поворот головы.</desc>
+  <rect width="960" height="540" fill="#f7fbf5"/>
+  <rect x="48" y="48" width="864" height="444" rx="22" fill="#ffffff" stroke="#d9e7dc" stroke-width="2"/>
+  <text x="80" y="96" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">Шея: малая амплитуда</text>
+  <text x="80" y="130" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="18">Медленно, без боли, голову не запрокидывать</text>
+
+  <g transform="translate(96 170)">
+    <rect x="0" y="0" width="340" height="250" rx="18" fill="#eef7ea"/>
+    <text x="28" y="42" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">1. Исходное положение</text>
+    <line x1="170" y1="176" x2="170" y2="98" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="170" cy="78" r="34" fill="#f3c9a9" stroke="#2f6f55" stroke-width="5"/>
+    <path d="M135 132 Q170 154 205 132" fill="none" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <line x1="142" y1="188" x2="198" y2="188" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <line x1="150" y1="240" x2="190" y2="188" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <line x1="190" y1="240" x2="190" y2="188" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <text x="80" y="222" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="16">плечи свободны</text>
+  </g>
+
+  <g transform="translate(524 170)">
+    <rect x="0" y="0" width="340" height="250" rx="18" fill="#eef7ea"/>
+    <text x="28" y="42" fill="#173428" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">2. Мягкий поворот</text>
+    <line x1="170" y1="176" x2="170" y2="98" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <ellipse cx="190" cy="78" rx="29" ry="34" fill="#f3c9a9" stroke="#2f6f55" stroke-width="5"/>
+    <path d="M135 132 Q170 154 205 132" fill="none" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M142 188 L198 188" stroke="#2f6f55" stroke-width="12" stroke-linecap="round"/>
+    <path d="M150 240 L190 188 M190 240 L190 188" stroke="#2f6f55" stroke-width="10" stroke-linecap="round"/>
+    <path d="M142 72 Q166 54 190 62" fill="none" stroke="#5aa27c" stroke-width="4" stroke-linecap="round"/>
+    <path d="M190 62 L180 55 M190 62 L180 70" fill="none" stroke="#5aa27c" stroke-width="4" stroke-linecap="round"/>
+    <text x="74" y="222" fill="#5f746a" font-family="Segoe UI, Arial, sans-serif" font-size="16">5 раз в каждую сторону</text>
+  </g>
+</svg>
