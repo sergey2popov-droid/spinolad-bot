@@ -42,7 +42,7 @@ function formatSymptom(guide, sources) {
     "Упражнения и действия:",
     bullets(guide.actions),
     "",
-    isBodyProgram ? "Трекинг и адаптация:" : "Работа с симптомами:",
+    isBodyProgram ? "Что замечать и как менять:" : "Работа с симптомами:",
     guide.symptom_work,
     "",
     "Когда не тянуть:",
@@ -121,12 +121,12 @@ function formatProgram(program, sources) {
       `День ${day.day}: ${day.focus}`,
       `- ${day.steps.join("\n- ")}`,
       `Восстановление: ${day.recovery}`,
-      `Трекинг: ${day.tracking}`
+      `Что заметить: ${day.tracking}`
     ].join("\n"))
     .join("\n\n");
 
   return [
-    `Программа: ${program.title}`,
+    `Маршрут: ${program.title}`,
     "",
     program.intro,
     "",
@@ -139,8 +139,8 @@ function formatProgram(program, sources) {
     "Адаптация:",
     bullets(program.adaptation),
     "",
-    "Вечерний чек-ин:",
-    "Ответьте кнопкой: стало легче / без изменений / стало хуже. По этому ответу я подскажу, как мягко изменить следующий день.",
+    "После шага:",
+    "Ответьте кнопкой: стало легче / так же / стало хуже. По этому ответу я подскажу, как мягко изменить следующий день.",
     "",
     "Источники:",
     sourceList(program.sources, sources)
@@ -151,7 +151,7 @@ function formatResult(result, data) {
   if (!result) {
     return [
       "Не нашел точное совпадение.",
-      "Попробуйте: болит шея, зажаты плечи, спина после сидения, ноет поясница, программа на 3 дня."
+      "Попробуйте: болит шея, зажаты плечи, спина после сидения, ноет поясница, маршрут на 3 дня."
     ].join("\n");
   }
   if (result.type === "program") return formatProgram(result.item, data.sources);

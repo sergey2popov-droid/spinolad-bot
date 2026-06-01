@@ -43,25 +43,16 @@ const checkinKeyboard = {
   inline_keyboard: [
     [
       { text: "Стало легче", callback_data: "checkin:better" },
-      { text: "Без изменений", callback_data: "checkin:same" }
+      { text: "Так же", callback_data: "checkin:same" }
     ],
-    [{ text: "Стало хуже", callback_data: "checkin:worse" }],
-    [{ text: "Новая программа", callback_data: "mode:program" }]
+    [{ text: "Стало хуже", callback_data: "checkin:worse" }]
   ]
 };
 
 const activeProgramKeyboard = {
   inline_keyboard: [
-    [
-      { text: "Стало легче", callback_data: "checkin:better" },
-      { text: "Без изменений", callback_data: "checkin:same" }
-    ],
-    [{ text: "Стало хуже", callback_data: "checkin:worse" }],
-    [
-      { text: "Мой день", callback_data: "program_status" },
-      { text: "Завершить", callback_data: "program_stop" }
-    ],
-    [{ text: "Новая программа", callback_data: "mode:program" }]
+    [{ text: "Показать текущий шаг", callback_data: "program_status" }],
+    [{ text: "Завершить маршрут", callback_data: "program_stop" }]
   ]
 };
 
@@ -164,7 +155,7 @@ function welcomeText() {
 
 function programPrompt() {
   return [
-    "Выберите стартовую программу.",
+    "Выберите стартовый маршрут.",
     "",
     "Если не уверены, начните с 1 дня для шеи/плеч или 3 дней для спины/поясницы.",
     "",
@@ -200,7 +191,7 @@ function checkinText(kind) {
       "Если есть прострел, онемение, слабость, боль в груди, нарушение мочеиспускания/стула или быстрое усиление боли — не ждите и обратитесь за медицинской помощью."
     ].join("\n");
   }
-  return "Записал чек-ин.";
+  return "Понял ваш ответ.";
 }
 
 function helpText() {
@@ -210,9 +201,9 @@ function helpText() {
     "1. Выберите область: шея, плечи, спина или поясница.",
     "2. Ответьте на 2-3 коротких вопроса: как давно, насколько сильно, есть ли тревожные признаки.",
     "3. В конце дня можно ответить, стало легче или хуже по шкале 0-10.",
-    "4. Команды: /status — текущий день, /stop — завершить программу.",
+    "4. Команды: /status — текущий шаг, /stop — завершить маршрут.",
     "",
-    "Я покажу короткую программу, трекинг, восстановление, осторожность и источники. Это не диагноз и не замена врачу."
+    "Я покажу мягкий маршрут, восстановление, осторожность и источники. Это не диагноз и не замена врачу."
   ].join("\n");
 }
 
@@ -394,7 +385,7 @@ function intakeRedFlagMessages(chatId, redFlag) {
       messageResponse(
         chatId,
         [
-          "Тут лучше не начинать программу вслепую.",
+          "Тут лучше не начинать маршрут вслепую.",
           "",
           redFlag !== "none"
             ? "Если есть онемение, слабость, травма, температура или быстрое ухудшение, безопаснее обратиться за медицинской оценкой."
@@ -473,7 +464,7 @@ function triggerInsight(trigger) {
     screen: "Похоже на экранно-позиционный сценарий. Обычно помогает не большая растяжка, а частые короткие паузы до усталости.",
     evening: "Похоже, напряжение накапливается за день. Тут полезнее вечерний сброс и одно рабочее правило на завтра.",
     load: "Похоже, тело реагирует на нагрузку или резкую смену активности. Маршрут лучше собрать мягче и с проверкой реакции."
-  }[trigger] || "Похоже, нужен мягкий маршрут с проверкой реакции, а не готовая программа вслепую.";
+  }[trigger] || "Похоже, нужен мягкий маршрут с проверкой реакции, а не готовый план вслепую.";
 }
 
 function routeTriggerMessages(chatId, area, trigger) {
@@ -554,7 +545,7 @@ function routeReadyMessages(chatId, area, trigger, time, recovery, goal) {
         `Восстановление: ${recoveryText}.`,
         `Цель: ${goalText}.`,
         "",
-        "Начнем с 3 дней. Если зайдет, продлим до 7 и будем адаптировать по чек-инам."
+        "Начнем с первого дня. После каждого шага я спрошу, стало легче, так же или хуже. По ответу подстрою следующий день."
       ].join("\n"),
       routeReadyKeyboard(area)
     )
@@ -587,11 +578,14 @@ function routeStartMessages(chatId, area) {
       [
         "Хорошо, включаю сопровождение.",
         "",
-        "День 1: повторите сегодняшний мягкий шаг один раз и вечером нажмите чек-ин. Если стало хуже, маршрут сразу уменьшим.",
+        `День 1: ${step.title}.`,
+        step.cue,
+        "",
+        "Когда сделаете, просто нажмите одну кнопку ниже: стало легче, так же или стало хуже. Это нужно, чтобы я понял, продолжать, упростить или остановить движение.",
         "",
         "Восстановление сегодня: душ, музыка, чай или короткая прогулка. Без обещаний чудес, просто маленькая опора для тела и головы."
       ].join("\n"),
-      activeProgramKeyboard
+      checkinKeyboard
     )
   ];
 }
@@ -721,7 +715,7 @@ function handleTelegramUpdate(update) {
       const result = recordCheckin(chatId, kind);
       return [messageResponse(chatId, result.text || checkinText(data), result.hasProgram ? activeProgramKeyboard : mainKeyboard)];
     }
-    if (data === "program_status") return [messageResponse(chatId, programStatus(chatId), statusKeyboard(chatId))];
+    if (data === "program_status") return [messageResponse(chatId, programStatus(chatId), getUserProgram(chatId) ? checkinKeyboard : mainKeyboard)];
     if (data === "program_stop") return [messageResponse(chatId, stopProgram(chatId), mainKeyboard)];
     return [messageResponse(chatId, modePrompt(data), data === "mode:program" ? programKeyboard : mainKeyboard)];
   }

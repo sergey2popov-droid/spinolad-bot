@@ -109,7 +109,7 @@ function stopProgram(chatId) {
 
   if (!active) {
     return [
-      "Активной программы сейчас нет.",
+      "Активного маршрута сейчас нет.",
       "",
       "Начните с выбора области: шея, плечи, спина или поясница."
     ].join("\n");
@@ -123,9 +123,9 @@ function stopProgram(chatId) {
   });
 
   return [
-    `Завершил программу: ${active.program.title}.`,
+    `Завершил маршрут: ${active.program.title}.`,
     "",
-    "Сохранил это в локальной истории. Можно начать новую программу, когда будет удобно."
+    "Можно начать новый маршрут, когда будет удобно."
   ].join("\n");
 }
 
@@ -133,7 +133,7 @@ function programStatus(chatId) {
   const active = getUserProgram(chatId);
   if (!active) {
     return [
-      "Активной программы сейчас нет.",
+      "Активного маршрута сейчас нет.",
       "",
       "Начните с выбора области: шея, плечи, спина или поясница."
     ].join("\n");
@@ -146,25 +146,25 @@ function programStatus(chatId) {
   const detail = userState.lastDetail;
 
   const lines = [
-    `Активная программа: ${program.title}`,
+    `Ваш маршрут: ${program.title}`,
     `День: ${day} из ${durationDays}`,
     "",
     daySummary(program, day)
   ];
 
   if (last) {
-    lines.push("", `Последний чек-ин: ${labelKind(last.kind)}, день ${last.day} -> ${last.nextDay}.`);
+    lines.push("", `Последняя оценка: ${labelKind(last.kind)}. Следующий шаг: день ${last.nextDay}.`);
   }
 
   if (detail) {
-    lines.push("", "Последняя подробность:");
+    lines.push("", "Последнее уточнение:");
     if (detail.pain !== null && detail.pain !== undefined) lines.push(`- боль: ${detail.pain}/10`);
     if (detail.stiffness !== null && detail.stiffness !== undefined) lines.push(`- скованность: ${detail.stiffness}/10`);
     if (detail.helped) lines.push(`- помогло: ${detail.helped}`);
     if (detail.worsened) lines.push(`- ухудшило: ${detail.worsened}`);
   }
 
-  lines.push("", "Вечером можно нажать чек-ин или написать: боль 3 скованность 5 помог душ ухудшил ноутбук.");
+  lines.push("", "Когда выполните этот шаг, нажмите одну из кнопок: стало легче, так же или стало хуже.");
   return lines.join("\n");
 }
 
@@ -172,7 +172,7 @@ function labelKind(kind) {
   if (kind === "better") return "стало легче";
   if (kind === "same") return "без изменений";
   if (kind === "worse") return "стало хуже";
-  return kind || "чек-ин";
+  return kind || "оценка";
 }
 
 function appendCheckin(entry) {
@@ -189,12 +189,12 @@ function nextDayFor(kind, currentDay, durationDays) {
 
 function daySummary(program, dayNumber) {
   const day = (program.days || []).find((item) => item.day === dayNumber);
-  if (!day) return "Продолжайте самый мягкий вариант программы и отмечайте реакцию 0-10.";
+  if (!day) return "Продолжайте самый мягкий вариант и отмечайте реакцию 0-10.";
   return [
     `День ${day.day}: ${day.focus}`,
     `- ${day.steps.join("\n- ")}`,
     `Восстановление: ${day.recovery}`,
-    `Трекинг: ${day.tracking}`
+    `Что заметить: ${day.tracking}`
   ].join("\n");
 }
 
@@ -204,7 +204,7 @@ function recordCheckin(chatId, kind) {
     return {
       hasProgram: false,
       text: [
-        "Пока нет активной программы.",
+        "Пока нет активного маршрута.",
         "",
         "Сначала выберите область: шея, плечи, спина или поясница."
       ].join("\n")
@@ -294,9 +294,9 @@ function recordDetailedCheckin(chatId, text) {
       matched: true,
       hasProgram: false,
       text: [
-        "Понял чек-ин, но активной программы пока нет.",
+        "Похоже, вы описали ощущения, но маршрут еще не запущен.",
         "",
-        "Выберите программу, и дальше я буду привязывать такие записи к конкретному дню."
+        "Сначала выберите область: шея, плечи, спина или поясница. Тогда я смогу связать ваши ответы с конкретным шагом."
       ].join("\n")
     };
   }
@@ -334,7 +334,7 @@ function detailLine(label, value) {
 
 function detailedResponse(program, day, details) {
   const lines = [
-    `Записал подробный чек-ин. Программа: ${program.title}, день ${day}.`,
+    `Понял уточнение по маршруту: ${program.title}, день ${day}.`,
     "",
     detailLine("Боль", details.pain === null ? null : `${details.pain}/10`),
     detailLine("Скованность", details.stiffness === null ? null : `${details.stiffness}/10`),
@@ -371,41 +371,41 @@ function detailedResponse(program, day, details) {
 function checkinResponse(kind, program, currentDay, nextDay) {
   if (kind === "better") {
     return [
-      `Записал: стало легче. Программа: ${program.title}.`,
+      "Понял: после шага стало легче.",
       "",
       nextDay > currentDay
-        ? `Переходим к дню ${nextDay}, но без резкого увеличения нагрузки.`
-        : "Вы уже на последнем дне программы: закрепляем самый мягкий работающий вариант.",
+        ? `Значит, этот объем подходит. Следующий шаг: день ${nextDay}, но без резкого увеличения нагрузки.`
+        : "Вы уже на последнем дне маршрута. Закрепляем самый мягкий вариант, который сработал.",
       "",
       daySummary(program, nextDay),
       "",
-      "Вечером напишите подробность одной строкой: боль 0-10, скованность 0-10, что помогло, что ухудшило."
+      "Если хотите, можно прямо сюда в чат добавить одной фразой: боль 0-10, что помогло, что ухудшило. Это необязательно."
     ].join("\n");
   }
 
   if (kind === "same") {
     return [
-      `Записал: без изменений. Программа: ${program.title}.`,
+      "Понял: пока без заметных изменений.",
       "",
-      `Остаемся на дне ${currentDay}. Сегодня цель — не добавить, а сделать медленнее и заметить триггер.`,
+      `Остаемся на дне ${currentDay}. Сейчас задача не добавить еще упражнений, а сделать медленнее и понять, что провоцирует напряжение.`,
       "",
       daySummary(program, currentDay),
       "",
-      "Напишите подробность одной строкой: боль 0-10, скованность 0-10, что помогло, что ухудшило. Если 2-3 дня подряд нет сдвига или симптомы частые, лучше обсудить причину со специалистом."
+      "Если 2-3 дня подряд нет сдвига или симптомы частые, лучше обсудить причину со специалистом."
     ].join("\n");
   }
 
   if (kind === "worse") {
     return [
-      `Записал: стало хуже. Программа: ${program.title}.`,
+      "Понял: после шага стало хуже.",
       "",
-      "На следующий день уменьшаем объем: уберите движение, после которого усилилось, оставьте только спокойную ходьбу, удобную позу или восстановление.",
+      "Значит, этот вариант сегодня не подходит. Движение, после которого усилилось, убираем. Оставьте только удобную позу, спокойную ходьбу или восстановление.",
       "",
       "Если есть прострел, онемение, слабость, боль в груди, нарушение мочеиспускания/стула или быстрое усиление боли — не ждите и обратитесь за медицинской помощью."
     ].join("\n");
   }
 
-  return "Записал чек-ин.";
+  return "Понял ваш ответ.";
 }
 
 module.exports = {
