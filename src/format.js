@@ -33,7 +33,7 @@ function formatSymptom(guide, sources) {
     "",
     guide.plain_explanation,
     "",
-    isBodyProgram ? "Программа 1-7 дней:" : "Народные рецепты:",
+    isBodyProgram ? "Мягкий план:" : "Народные рецепты:",
     recipes,
     "",
     isBodyProgram ? "Восстановление:" : "Продукты и напитки:",

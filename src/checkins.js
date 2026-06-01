@@ -57,6 +57,50 @@ function getUserProgram(chatId) {
   return { state: userState, program };
 }
 
+function getUserState(chatId) {
+  const state = readState();
+  return state[String(chatId)] || null;
+}
+
+function saveUserState(chatId, userState) {
+  const state = readState();
+  state[String(chatId)] = {
+    ...(state[String(chatId)] || {}),
+    ...userState,
+    updatedAt: new Date().toISOString()
+  };
+  writeState(state);
+  return state[String(chatId)];
+}
+
+function startIntake(chatId, area) {
+  return saveUserState(chatId, {
+    intake: {
+      area,
+      startedAt: new Date().toISOString()
+    }
+  });
+}
+
+function updateIntake(chatId, patch) {
+  const current = getUserState(chatId) || {};
+  const intake = {
+    ...(current.intake || {}),
+    ...patch,
+    updatedAt: new Date().toISOString()
+  };
+  return saveUserState(chatId, { intake });
+}
+
+function clearIntake(chatId) {
+  const state = readState();
+  const userState = state[String(chatId)] || {};
+  delete userState.intake;
+  if (Object.keys(userState).length) state[String(chatId)] = userState;
+  else delete state[String(chatId)];
+  writeState(state);
+}
+
 function stopProgram(chatId) {
   const active = getUserProgram(chatId);
   const state = readState();
@@ -67,7 +111,7 @@ function stopProgram(chatId) {
     return [
       "Активной программы сейчас нет.",
       "",
-      "Можно выбрать новую программу: шея/плечи на 1-3 дня или спина/поясница на 3-7 дней."
+      "Начните с выбора области: шея, плечи, спина или поясница."
     ].join("\n");
   }
 
@@ -91,7 +135,7 @@ function programStatus(chatId) {
     return [
       "Активной программы сейчас нет.",
       "",
-      "Нажмите “Программа 1-7 дней” или напишите: “программа для шеи”, “программа для поясницы”."
+      "Начните с выбора области: шея, плечи, спина или поясница."
     ].join("\n");
   }
 
@@ -162,7 +206,7 @@ function recordCheckin(chatId, kind) {
       text: [
         "Пока нет активной программы.",
         "",
-        "Нажмите “Новая программа” и выберите старт: 1 день, 3 дня или 7 дней."
+        "Сначала выберите область: шея, плечи, спина или поясница."
       ].join("\n")
     };
   }
@@ -369,6 +413,10 @@ module.exports = {
   getUserProgram,
   stopProgram,
   programStatus,
+  startIntake,
+  updateIntake,
+  clearIntake,
+  getUserState,
   recordCheckin,
   recordDetailedCheckin,
   parseDetailText
