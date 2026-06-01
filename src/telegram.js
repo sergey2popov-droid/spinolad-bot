@@ -267,11 +267,73 @@ function feedbackKeyboard(area) {
   };
 }
 
-function continuationKeyboard(area) {
+function triggerKeyboard(area) {
   return {
     inline_keyboard: [
-      [{ text: "Вести меня 7 дней", callback_data: `guided_start:${area}` }],
-      [{ text: "Еще один бесплатный шаг", callback_data: `free_step:${area}` }],
+      [
+        { text: "Утром", callback_data: `route_trigger:${area}:morning` },
+        { text: "После экрана", callback_data: `route_trigger:${area}:screen` }
+      ],
+      [
+        { text: "Вечером", callback_data: `route_trigger:${area}:evening` },
+        { text: "После нагрузки", callback_data: `route_trigger:${area}:load` }
+      ]
+    ]
+  };
+}
+
+function routeChoiceKeyboard(area, trigger) {
+  return {
+    inline_keyboard: [
+      [{ text: "Собрать мой маршрут", callback_data: `route_time:${area}:${trigger}` }],
+      [{ text: "Еще один шаг", callback_data: `free_step:${area}:${trigger}` }],
+      [{ text: "Позже", callback_data: "mode:home" }]
+    ]
+  };
+}
+
+function routeTimeKeyboard(area, trigger) {
+  return {
+    inline_keyboard: [
+      [
+        { text: "2 минуты", callback_data: `route_recovery:${area}:${trigger}:2m` },
+        { text: "5 минут", callback_data: `route_recovery:${area}:${trigger}:5m` }
+      ],
+      [{ text: "10 минут", callback_data: `route_recovery:${area}:${trigger}:10m` }]
+    ]
+  };
+}
+
+function routeRecoveryKeyboard(area, trigger, time) {
+  return {
+    inline_keyboard: [
+      [
+        { text: "Душ", callback_data: `route_goal:${area}:${trigger}:${time}:shower` },
+        { text: "Музыка", callback_data: `route_goal:${area}:${trigger}:${time}:music` }
+      ],
+      [
+        { text: "Чай", callback_data: `route_goal:${area}:${trigger}:${time}:tea` },
+        { text: "Прогулка", callback_data: `route_goal:${area}:${trigger}:${time}:walk` }
+      ]
+    ]
+  };
+}
+
+function routeGoalKeyboard(area, trigger, time, recovery) {
+  return {
+    inline_keyboard: [
+      [{ text: "Легче сегодня", callback_data: `route_ready:${area}:${trigger}:${time}:${recovery}:today` }],
+      [{ text: "Меньше зажимов к вечеру", callback_data: `route_ready:${area}:${trigger}:${time}:${recovery}:evening` }],
+      [{ text: "Привычка на неделю", callback_data: `route_ready:${area}:${trigger}:${time}:${recovery}:habit` }]
+    ]
+  };
+}
+
+function routeReadyKeyboard(area) {
+  return {
+    inline_keyboard: [
+      [{ text: "Начать маршрут", callback_data: `route_start:${area}` }],
+      [{ text: "Еще один шаг", callback_data: `free_step:${area}:ready` }],
       [{ text: "Позже", callback_data: "mode:home" }]
     ]
   };
@@ -396,16 +458,110 @@ function stepFeedbackMessages(chatId, kind, area) {
         "",
         lead,
         "",
-        "Я могу вести вас 7 дней: каждый день 2 минуты, короткий чек-ин и адаптация по ощущениям. Так человек не остается один на один с задачей \"надо бы заняться собой\".",
+        "Чтобы не гадать, уточню еще одну вещь.",
         "",
-        "Что делаем дальше?"
+        "Когда обычно сильнее?"
       ].join("\n"),
-      continuationKeyboard(area)
+      triggerKeyboard(area)
     )
   ];
 }
 
-function freeStepMessages(chatId, area) {
+function triggerInsight(trigger) {
+  return {
+    morning: "Похоже, важна утренняя скованность. Здесь лучше начинать с малой амплитуды и не растягиваться резко.",
+    screen: "Похоже на экранно-позиционный сценарий. Обычно помогает не большая растяжка, а частые короткие паузы до усталости.",
+    evening: "Похоже, напряжение накапливается за день. Тут полезнее вечерний сброс и одно рабочее правило на завтра.",
+    load: "Похоже, тело реагирует на нагрузку или резкую смену активности. Маршрут лучше собрать мягче и с проверкой реакции."
+  }[trigger] || "Похоже, нужен мягкий маршрут с проверкой реакции, а не готовая программа вслепую.";
+}
+
+function routeTriggerMessages(chatId, area, trigger) {
+  return [
+    messageResponse(
+      chatId,
+      [
+        triggerInsight(trigger),
+        "",
+        "Я могу собрать короткий маршрут под ваш ритм: сколько времени реально есть, чем лучше восстанавливаться и какая цель на ближайшие дни.",
+        "",
+        "Продолжим?"
+      ].join("\n"),
+      routeChoiceKeyboard(area, trigger)
+    )
+  ];
+}
+
+function routeTimeMessages(chatId, area, trigger) {
+  return [
+    messageResponse(
+      chatId,
+      [
+        "Хорошо, соберем без марафона.",
+        "",
+        "Сколько времени в день реально выделить без сопротивления?"
+      ].join("\n"),
+      routeTimeKeyboard(area, trigger)
+    )
+  ];
+}
+
+function routeRecoveryMessages(chatId, area, trigger, time) {
+  return [
+    messageResponse(
+      chatId,
+      [
+        "Принял.",
+        "",
+        "Что обычно лучше помогает телу отпустить напряжение?"
+      ].join("\n"),
+      routeRecoveryKeyboard(area, trigger, time)
+    )
+  ];
+}
+
+function routeGoalMessages(chatId, area, trigger, time, recovery) {
+  return [
+    messageResponse(
+      chatId,
+      [
+        "Еще один штрих.",
+        "",
+        "Какая цель сейчас важнее?"
+      ].join("\n"),
+      routeGoalKeyboard(area, trigger, time, recovery)
+    )
+  ];
+}
+
+function routeReadyMessages(chatId, area, trigger, time, recovery, goal) {
+  const timeText = { "2m": "2 минуты", "5m": "5 минут", "10m": "10 минут" }[time] || "несколько минут";
+  const recoveryText = { shower: "теплый душ", music: "спокойная музыка", tea: "чай/вода как пауза", walk: "короткая прогулка" }[recovery] || "спокойное восстановление";
+  const goalText = {
+    today: "облегчить самочувствие сегодня",
+    evening: "меньше зажимов к вечеру",
+    habit: "собрать привычку на неделю"
+  }[goal] || "двигаться мягко и регулярно";
+  return [
+    messageResponse(
+      chatId,
+      [
+        "Готово. Маршрут получился мягкий, без резкого старта.",
+        "",
+        `Фокус: ${areaName(area)}.`,
+        `Триггер: ${triggerInsight(trigger)}`,
+        `Ритм: ${timeText} в день.`,
+        `Восстановление: ${recoveryText}.`,
+        `Цель: ${goalText}.`,
+        "",
+        "Начнем с 3 дней. Если зайдет, продлим до 7 и будем адаптировать по чек-инам."
+      ].join("\n"),
+      routeReadyKeyboard(area)
+    )
+  ];
+}
+
+function freeStepMessages(chatId, area, trigger) {
   const step = firstStepByArea[area] || firstStepByArea.neck;
   return [
     messageResponse(
@@ -417,12 +573,12 @@ function freeStepMessages(chatId, area) {
         "",
         "Потом лучше не добавлять третье упражнение подряд. Для привычки важнее коротко повторить завтра и отметить реакцию."
       ].join("\n"),
-      continuationKeyboard(area)
+      routeChoiceKeyboard(area, trigger || "unknown")
     )
   ];
 }
 
-function guidedStartMessages(chatId, area) {
+function routeStartMessages(chatId, area) {
   const step = firstStepByArea[area] || firstStepByArea.neck;
   startProgram(chatId, step.programId);
   return [
@@ -431,9 +587,9 @@ function guidedStartMessages(chatId, area) {
       [
         "Хорошо, включаю сопровождение.",
         "",
-        "День 1: повторите сегодняшний мягкий шаг один раз и вечером нажмите чек-ин. Если стало хуже - программа сразу уменьшит нагрузку.",
+        "День 1: повторите сегодняшний мягкий шаг один раз и вечером нажмите чек-ин. Если стало хуже, маршрут сразу уменьшим.",
         "",
-        "Восстановление сегодня: теплый душ 3-5 минут или спокойная музыка 10 минут. Без обещаний чудес, просто маленькая опора для тела и головы."
+        "Восстановление сегодня: душ, музыка, чай или короткая прогулка. Без обещаний чудес, просто маленькая опора для тела и головы."
       ].join("\n"),
       activeProgramKeyboard
     )
@@ -530,8 +686,31 @@ function handleTelegramUpdate(update) {
       const [, kind, area] = data.split(":");
       return stepFeedbackMessages(chatId, kind, area);
     }
-    if (data.startsWith("free_step:")) return freeStepMessages(chatId, data.replace("free_step:", ""));
-    if (data.startsWith("guided_start:")) return guidedStartMessages(chatId, data.replace("guided_start:", ""));
+    if (data.startsWith("route_trigger:")) {
+      const [, area, trigger] = data.split(":");
+      return routeTriggerMessages(chatId, area, trigger);
+    }
+    if (data.startsWith("route_time:")) {
+      const [, area, trigger] = data.split(":");
+      return routeTimeMessages(chatId, area, trigger);
+    }
+    if (data.startsWith("route_recovery:")) {
+      const [, area, trigger, time] = data.split(":");
+      return routeRecoveryMessages(chatId, area, trigger, time);
+    }
+    if (data.startsWith("route_goal:")) {
+      const [, area, trigger, time, recovery] = data.split(":");
+      return routeGoalMessages(chatId, area, trigger, time, recovery);
+    }
+    if (data.startsWith("route_ready:")) {
+      const [, area, trigger, time, recovery, goal] = data.split(":");
+      return routeReadyMessages(chatId, area, trigger, time, recovery, goal);
+    }
+    if (data.startsWith("route_start:")) return routeStartMessages(chatId, data.replace("route_start:", ""));
+    if (data.startsWith("free_step:")) {
+      const [, area, trigger] = data.split(":");
+      return freeStepMessages(chatId, area, trigger);
+    }
     if (data.startsWith("program:")) {
       const id = data.replace("program:", "");
       const query = programQueries[id] || id.replaceAll("_", " ");
