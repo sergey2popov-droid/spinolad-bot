@@ -99,11 +99,57 @@ const redFlagKeyboard = {
   ]
 };
 
+const followupLabels = {
+  better: "Стало легче",
+  same: "Пока так же",
+  worse: "Стало хуже"
+};
+
 const programQueries = {
   neck_shoulders_1_day: "шея 1 день",
   neck_shoulders_3_days: "шея 3 дня",
+  neck_shoulders_7_days: "шея 7 дней",
   back_lower_3_days: "спина 3 дня",
   back_lower_7_days: "спина 7 дней"
+};
+
+const firstStepByArea = {
+  neck: {
+    actionId: "neck_small_range",
+    query: "повороты шеи",
+    title: "Шея: 90 секунд малой амплитуды",
+    cue: "Сядьте ровно, плечи не тяните вверх. 5 раз медленно поверните голову вправо-влево, потом 5 мягких кивков. Движение маленькое, без запрокидывания.",
+    watch: "Если появится головокружение, онемение, прострел или боль усилится - остановитесь.",
+    freeStep: "Сделайте 5 длинных выдохов и на 30 секунд посмотрите вдаль. Это разгружает экранную позу без лишней растяжки.",
+    programId: "neck_shoulders_7_days"
+  },
+  shoulders: {
+    actionId: "shoulder_blade_pause",
+    query: "зажаты плечи",
+    title: "Плечи: лопаточная пауза",
+    cue: "8 раз мягко сведите лопатки назад-вниз, будто кладете их в задние карманы. Шея свободная, поясницу не прогибать.",
+    watch: "Если отдает в руку, появляется онемение или боль растет - остановитесь.",
+    freeStep: "Опустите плечи на выдохе 5 раз подряд. Не давите на себя, задача - поймать ощущение свободы в шее.",
+    programId: "neck_shoulders_7_days"
+  },
+  back: {
+    actionId: "wall_microbreak",
+    query: "спина после сидения",
+    title: "Спина: микропауза у стены",
+    cue: "Встаньте у стены на 60 секунд: затылок не тяните, плечи отпустите, сделайте 5 спокойных выдохов. Потом 30 секунд пройдитесь.",
+    watch: "Не прижимайтесь силой и не терпите усиление боли.",
+    freeStep: "Поставьте таймер: встать на 60 секунд до того, как спина начнет ныть. Это маленькое правило часто важнее большого упражнения.",
+    programId: "back_lower_7_days"
+  },
+  lower_back: {
+    actionId: "pelvic_tilt_easy",
+    query: "ноет поясница",
+    title: "Поясница: мягкий наклон таза",
+    cue: "Лягте на спину с согнутыми коленями или встаньте у стены. 6-8 раз мягко подкрутите таз, чуть уменьшая и возвращая поясничный прогиб.",
+    watch: "При отдаче в ногу, слабости, онемении в паху или нарушении мочеиспускания/стула - не продолжайте и обратитесь за медицинской помощью.",
+    freeStep: "2 минуты спокойной ходьбы по комнате. Если после ходьбы легче, это хороший знак для мягкого сопровождения.",
+    programId: "back_lower_7_days"
+  }
 };
 
 function welcomeText() {
@@ -209,6 +255,28 @@ function queryForIntake(intake = {}) {
   return "болит шея";
 }
 
+function feedbackKeyboard(area) {
+  return {
+    inline_keyboard: [
+      [
+        { text: "Стало легче", callback_data: `step_feedback:better:${area}` },
+        { text: "Пока так же", callback_data: `step_feedback:same:${area}` }
+      ],
+      [{ text: "Стало хуже", callback_data: `step_feedback:worse:${area}` }]
+    ]
+  };
+}
+
+function continuationKeyboard(area) {
+  return {
+    inline_keyboard: [
+      [{ text: "Вести меня 7 дней", callback_data: `guided_start:${area}` }],
+      [{ text: "Еще один бесплатный шаг", callback_data: `free_step:${area}` }],
+      [{ text: "Позже", callback_data: "mode:home" }]
+    ]
+  };
+}
+
 function startIntakeMessages(chatId, area) {
   startIntake(chatId, area);
   return [
@@ -278,15 +346,7 @@ function intakeRedFlagMessages(chatId, redFlag) {
   }
 
   clearIntake(chatId);
-  const summary = [
-    `Спасибо. Картина такая: ${areaName(intake.area)}, ${labelDuration(intake.duration)}, интенсивность до 5/10, тревожных признаков нет.`,
-    "",
-    "Теперь можно дать мягкий следующий шаг."
-  ].join("\n");
-  return [
-    messageResponse(chatId, summary),
-    ...answerMessages(chatId, queryForIntake(intake))
-  ];
+  return firstStepMessages(chatId, intake);
 }
 
 function labelDuration(duration) {
@@ -294,6 +354,90 @@ function labelDuration(duration) {
   if (duration === "recurrent") return "повторяется";
   if (duration === "posture") return "связано с сидением или экраном";
   return "контекст уточнен";
+}
+
+function firstStepMessages(chatId, intake = {}) {
+  const area = intake.area || "neck";
+  const step = firstStepByArea[area] || firstStepByArea.neck;
+  const answer = answerQuery(step.query);
+  const imageUrl = publicAssetUrl(answer.illustration?.assetPath);
+  const text = [
+    `Похоже на мягкое напряжение: ${areaName(area)}, ${labelDuration(intake.duration)}, до 5/10, без тревожных признаков.`,
+    "",
+    "Давайте не грузить вас программой сразу. Сначала проверим одну вещь на 90 секунд.",
+    "",
+    step.title,
+    step.cue,
+    "",
+    step.watch,
+    "",
+    "После этого нажмите, что изменилось."
+  ].join("\n");
+  const messages = [];
+  if (imageUrl) {
+    messages.push(photoResponse(chatId, imageUrl, `${answer.illustration.title}\n${answer.illustration.textCue}`));
+  }
+  messages.push(messageResponse(chatId, text, feedbackKeyboard(area)));
+  return messages;
+}
+
+function stepFeedbackMessages(chatId, kind, area) {
+  const label = followupLabels[kind] || "Принял";
+  const lead = {
+    better: "Отлично. Значит телу подходит мягкое движение, без рывка и героизма.",
+    same: "Нормально. Первый шаг не всегда сразу дает вау-эффект; важнее понять, что не стало хуже.",
+    worse: "Спасибо, это важный сигнал. Сегодня не усиливаем движение и убираем то, после чего стало неприятнее."
+  }[kind] || "Принял.";
+  return [
+    messageResponse(
+      chatId,
+      [
+        `${label}.`,
+        "",
+        lead,
+        "",
+        "Я могу вести вас 7 дней: каждый день 2 минуты, короткий чек-ин и адаптация по ощущениям. Так человек не остается один на один с задачей \"надо бы заняться собой\".",
+        "",
+        "Что делаем дальше?"
+      ].join("\n"),
+      continuationKeyboard(area)
+    )
+  ];
+}
+
+function freeStepMessages(chatId, area) {
+  const step = firstStepByArea[area] || firstStepByArea.neck;
+  return [
+    messageResponse(
+      chatId,
+      [
+        "Еще один бесплатный шаг.",
+        "",
+        step.freeStep,
+        "",
+        "Потом лучше не добавлять третье упражнение подряд. Для привычки важнее коротко повторить завтра и отметить реакцию."
+      ].join("\n"),
+      continuationKeyboard(area)
+    )
+  ];
+}
+
+function guidedStartMessages(chatId, area) {
+  const step = firstStepByArea[area] || firstStepByArea.neck;
+  startProgram(chatId, step.programId);
+  return [
+    messageResponse(
+      chatId,
+      [
+        "Хорошо, включаю сопровождение.",
+        "",
+        "День 1: повторите сегодняшний мягкий шаг один раз и вечером нажмите чек-ин. Если стало хуже - программа сразу уменьшит нагрузку.",
+        "",
+        "Восстановление сегодня: теплый душ 3-5 минут или спокойная музыка 10 минут. Без обещаний чудес, просто маленькая опора для тела и головы."
+      ].join("\n"),
+      activeProgramKeyboard
+    )
+  ];
 }
 
 function chunkText(text, maxLength = 3900) {
@@ -382,6 +526,12 @@ function handleTelegramUpdate(update) {
     if (data.startsWith("intake_duration:")) return intakeDurationMessages(chatId, data.replace("intake_duration:", ""));
     if (data.startsWith("intake_pain:")) return intakePainMessages(chatId, data.replace("intake_pain:", ""));
     if (data.startsWith("intake_red:")) return intakeRedFlagMessages(chatId, data.replace("intake_red:", ""));
+    if (data.startsWith("step_feedback:")) {
+      const [, kind, area] = data.split(":");
+      return stepFeedbackMessages(chatId, kind, area);
+    }
+    if (data.startsWith("free_step:")) return freeStepMessages(chatId, data.replace("free_step:", ""));
+    if (data.startsWith("guided_start:")) return guidedStartMessages(chatId, data.replace("guided_start:", ""));
     if (data.startsWith("program:")) {
       const id = data.replace("program:", "");
       const query = programQueries[id] || id.replaceAll("_", " ");
