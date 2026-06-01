@@ -101,6 +101,25 @@ function clearIntake(chatId) {
   writeState(state);
 }
 
+function updateRouteDraft(chatId, patch) {
+  const current = getUserState(chatId) || {};
+  const routeDraft = {
+    ...(current.routeDraft || {}),
+    ...patch,
+    updatedAt: new Date().toISOString()
+  };
+  return saveUserState(chatId, { routeDraft });
+}
+
+function clearRouteDraft(chatId) {
+  const state = readState();
+  const userState = state[String(chatId)] || {};
+  delete userState.routeDraft;
+  if (Object.keys(userState).length) state[String(chatId)] = userState;
+  else delete state[String(chatId)];
+  writeState(state);
+}
+
 function stopProgram(chatId) {
   const active = getUserProgram(chatId);
   const state = readState();
@@ -416,6 +435,8 @@ module.exports = {
   startIntake,
   updateIntake,
   clearIntake,
+  updateRouteDraft,
+  clearRouteDraft,
   getUserState,
   recordCheckin,
   recordDetailedCheckin,

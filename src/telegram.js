@@ -9,6 +9,8 @@ const {
   startIntake,
   updateIntake,
   clearIntake,
+  updateRouteDraft,
+  clearRouteDraft,
   getUserState
 } = require("./checkins");
 
@@ -313,9 +315,9 @@ function routeRecoveryKeyboard(area, trigger, time) {
 function routeGoalKeyboard(area, trigger, time, recovery) {
   return {
     inline_keyboard: [
-      [{ text: "Легче сегодня", callback_data: `route_ready:${area}:${trigger}:${time}:${recovery}:today` }],
-      [{ text: "Меньше зажимов к вечеру", callback_data: `route_ready:${area}:${trigger}:${time}:${recovery}:evening` }],
-      [{ text: "Привычка на неделю", callback_data: `route_ready:${area}:${trigger}:${time}:${recovery}:habit` }]
+      [{ text: "Легче сегодня", callback_data: `route_ready_saved:${area}:today` }],
+      [{ text: "Меньше зажимов к вечеру", callback_data: `route_ready_saved:${area}:evening` }],
+      [{ text: "Привычка на неделю", callback_data: `route_ready_saved:${area}:habit` }]
     ]
   };
 }
@@ -331,6 +333,7 @@ function routeReadyKeyboard(area) {
 }
 
 function startIntakeMessages(chatId, area) {
+  clearRouteDraft(chatId);
   startIntake(chatId, area);
   return [
     messageResponse(
@@ -468,6 +471,7 @@ function triggerInsight(trigger) {
 }
 
 function routeTriggerMessages(chatId, area, trigger) {
+  updateRouteDraft(chatId, { area, trigger, awaiting: "choice" });
   return [
     messageResponse(
       chatId,
@@ -484,6 +488,7 @@ function routeTriggerMessages(chatId, area, trigger) {
 }
 
 function routeTimeMessages(chatId, area, trigger) {
+  updateRouteDraft(chatId, { area, trigger, awaiting: "time" });
   return [
     messageResponse(
       chatId,
@@ -498,6 +503,7 @@ function routeTimeMessages(chatId, area, trigger) {
 }
 
 function routeRecoveryMessages(chatId, area, trigger, time) {
+  updateRouteDraft(chatId, { area, trigger, time, awaiting: "recovery" });
   return [
     messageResponse(
       chatId,
@@ -512,6 +518,7 @@ function routeRecoveryMessages(chatId, area, trigger, time) {
 }
 
 function routeGoalMessages(chatId, area, trigger, time, recovery) {
+  updateRouteDraft(chatId, { area, trigger, time, recovery, awaiting: "goal" });
   return [
     messageResponse(
       chatId,
@@ -526,13 +533,14 @@ function routeGoalMessages(chatId, area, trigger, time, recovery) {
 }
 
 function routeReadyMessages(chatId, area, trigger, time, recovery, goal) {
+  updateRouteDraft(chatId, { area, trigger, time, recovery, goal, awaiting: "ready" });
   const timeText = { "2m": "2 минуты", "5m": "5 минут", "10m": "10 минут" }[time] || "несколько минут";
-  const recoveryText = { shower: "теплый душ", music: "спокойная музыка", tea: "чай/вода как пауза", walk: "короткая прогулка" }[recovery] || "спокойное восстановление";
+  const recoveryText = { shower: "теплый душ", music: "спокойная музыка", tea: "чай/вода как пауза", walk: "короткая прогулка" }[recovery] || recovery || "спокойное восстановление";
   const goalText = {
     today: "облегчить самочувствие сегодня",
     evening: "меньше зажимов к вечеру",
     habit: "собрать привычку на неделю"
-  }[goal] || "двигаться мягко и регулярно";
+  }[goal] || goal || "двигаться мягко и регулярно";
   return [
     messageResponse(
       chatId,
@@ -550,6 +558,18 @@ function routeReadyMessages(chatId, area, trigger, time, recovery, goal) {
       routeReadyKeyboard(area)
     )
   ];
+}
+
+function routeReadyFromDraftMessages(chatId, area, goal) {
+  const routeDraft = getUserState(chatId)?.routeDraft || {};
+  return routeReadyMessages(
+    chatId,
+    area || routeDraft.area || "neck",
+    routeDraft.trigger || "unknown",
+    routeDraft.time || "несколько минут",
+    routeDraft.recovery || "спокойное восстановление",
+    goal
+  );
 }
 
 function freeStepMessages(chatId, area, trigger) {
@@ -571,6 +591,7 @@ function freeStepMessages(chatId, area, trigger) {
 
 function routeStartMessages(chatId, area) {
   const step = firstStepByArea[area] || firstStepByArea.neck;
+  clearRouteDraft(chatId);
   startProgram(chatId, step.programId);
   return [
     messageResponse(
@@ -588,6 +609,55 @@ function routeStartMessages(chatId, area) {
       checkinKeyboard
     )
   ];
+}
+
+function normalizeShortAnswer(text) {
+  return String(text || "").trim().replace(/\s+/g, " ").slice(0, 80);
+}
+
+function timeCodeFromText(text) {
+  const lower = String(text || "").toLowerCase();
+  if (/(10|десять)/.test(lower)) return "10m";
+  if (/(5|пять)/.test(lower)) return "5m";
+  if (/(2|две|два|пару)/.test(lower)) return "2m";
+  return normalizeShortAnswer(text) || "несколько минут";
+}
+
+function routeTextAnswerMessages(chatId, text) {
+  const routeDraft = getUserState(chatId)?.routeDraft;
+  if (!routeDraft?.awaiting) return null;
+
+  const answer = normalizeShortAnswer(text);
+  const area = routeDraft.area || "neck";
+  const trigger = routeDraft.trigger || "unknown";
+
+  if (routeDraft.awaiting === "time") {
+    const time = timeCodeFromText(answer);
+    return routeRecoveryMessages(chatId, area, trigger, time);
+  }
+
+  if (routeDraft.awaiting === "choice") {
+    return routeTimeMessages(chatId, area, trigger);
+  }
+
+  if (routeDraft.awaiting === "recovery") {
+    const recovery = answer || "спокойное восстановление";
+    return routeGoalMessages(chatId, area, trigger, routeDraft.time || "несколько минут", recovery);
+  }
+
+  if (routeDraft.awaiting === "goal") {
+    const goal = answer || "двигаться мягко и регулярно";
+    return routeReadyMessages(
+      chatId,
+      area,
+      trigger,
+      routeDraft.time || "несколько минут",
+      routeDraft.recovery || "спокойное восстановление",
+      goal
+    );
+  }
+
+  return null;
 }
 
 function chunkText(text, maxLength = 3900) {
@@ -657,11 +727,16 @@ function handleTelegramUpdate(update) {
   if (update.message) {
     const chatId = update.message.chat.id;
     const text = (update.message.text || "").trim();
-    if (!text || text === "/start") return [messageResponse(chatId, welcomeText(), mainKeyboard)];
+    if (!text || text === "/start") {
+      clearRouteDraft(chatId);
+      return [messageResponse(chatId, welcomeText(), mainKeyboard)];
+    }
     if (text === "/help") return [messageResponse(chatId, helpText(), mainKeyboard)];
     if (text === "/sources") return [messageResponse(chatId, sourcesText(), mainKeyboard)];
     if (text === "/status") return [messageResponse(chatId, programStatus(chatId), statusKeyboard(chatId))];
     if (text === "/stop") return [messageResponse(chatId, stopProgram(chatId), mainKeyboard)];
+    const routeTextAnswer = routeTextAnswerMessages(chatId, text);
+    if (routeTextAnswer) return routeTextAnswer;
     const detail = recordDetailedCheckin(chatId, text);
     if (detail.matched) {
       return [messageResponse(chatId, detail.text, detail.hasProgram ? activeProgramKeyboard : mainKeyboard)];
@@ -672,6 +747,10 @@ function handleTelegramUpdate(update) {
   if (update.callback_query) {
     const chatId = update.callback_query.message.chat.id;
     const data = update.callback_query.data;
+    if (data === "mode:home") {
+      clearRouteDraft(chatId);
+      return [messageResponse(chatId, welcomeText(), mainKeyboard)];
+    }
     if (data.startsWith("intake_area:")) return startIntakeMessages(chatId, data.replace("intake_area:", ""));
     if (data.startsWith("intake_duration:")) return intakeDurationMessages(chatId, data.replace("intake_duration:", ""));
     if (data.startsWith("intake_pain:")) return intakePainMessages(chatId, data.replace("intake_pain:", ""));
@@ -699,6 +778,10 @@ function handleTelegramUpdate(update) {
     if (data.startsWith("route_ready:")) {
       const [, area, trigger, time, recovery, goal] = data.split(":");
       return routeReadyMessages(chatId, area, trigger, time, recovery, goal);
+    }
+    if (data.startsWith("route_ready_saved:")) {
+      const [, area, goal] = data.split(":");
+      return routeReadyFromDraftMessages(chatId, area, goal);
     }
     if (data.startsWith("route_start:")) return routeStartMessages(chatId, data.replace("route_start:", ""));
     if (data.startsWith("free_step:")) {
