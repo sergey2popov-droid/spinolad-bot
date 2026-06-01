@@ -66,7 +66,7 @@ https://<render-service-name>.onrender.com/health
 ```json
 {
   "ok": true,
-  "service": "celebnik"
+    "service": "spinolad"
 }
 ```
 

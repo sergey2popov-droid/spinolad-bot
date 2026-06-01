@@ -2,7 +2,7 @@
 
 ## Project
 
-**Целебник / celebnik** is now a Telegram-first assistant for natural improvement of daily well-being and useful habits, with the first product focus on neck, shoulders, back, and lower back comfort.
+**Спинолад / spinolad** is a Telegram-first assistant for natural improvement of daily well-being and useful habits, with the first product focus on neck, shoulders, back, and lower back comfort.
 
 The product should feel warm, practical, calm, and adult: a habit companion that gives short 1-7 day programs, simple movement, tracking, and small recovery rituals, while staying careful about medical red flags.
 
@@ -150,10 +150,6 @@ Main Telegram entries:
 - Программа на 1-7 дней
 
 Mini App is secondary. Do not spend the next implementation step polishing Mini App before the Telegram bot flow is good.
-
-Header slogan:
-
-- "Здоровье и энергия доступные всем"
 
 Start message:
 

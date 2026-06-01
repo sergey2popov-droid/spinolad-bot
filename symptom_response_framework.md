@@ -1,4 +1,4 @@
-# Symptom response framework for Celebnik
+﻿# Symptom response framework for Spinolad
 
 ## Core decision
 
@@ -22,7 +22,7 @@ Health symptom checkers and trusted health sites usually follow this logic:
 4. **No definitive diagnosis without clinician review**.
 5. **Escalate clearly** when symptoms are severe, persistent, recurrent, or linked with risk factors.
 
-Celebnik should adapt this to food/traditional support:
+Spinolad should adapt this to food/traditional support:
 
 - no diagnosis
 - no "cure" promise

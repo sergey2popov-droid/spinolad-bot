@@ -29,7 +29,7 @@ function formatSymptom(guide, sources) {
     .join("\n\n");
 
   return [
-    `Целебник: ${guide.title}`,
+    `Спинолад: ${guide.title}`,
     "",
     guide.plain_explanation,
     "",

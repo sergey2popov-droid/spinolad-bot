@@ -1,4 +1,4 @@
-window.CELEBNIK_DATA = {
+﻿window.SPINOLAD_DATA = {
   sources: [
     { id: "nhs", title: "NHS: stomach ache and abdominal pain", kind: "медицинская безопасность", url: "https://www.nhs.uk/conditions/stomach-ache/" },
     { id: "mayo", title: "Mayo Clinic: abdominal pain", kind: "медицинская безопасность", url: "https://www.mayoclinic.org/symptoms/abdominal-pain/basics/when-to-see-doctor/sym-20050728" },

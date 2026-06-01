@@ -60,8 +60,7 @@ const programQueries = {
 
 function welcomeText() {
   return [
-    "Целебник",
-    "Здоровье и энергия доступные всем",
+    "Спинолад",
     "",
     "Помогаю мягко улучшать самочувствие шеи, плеч, спины и поясницы через короткие программы, трекинг и полезные привычки.",
     "",
@@ -125,7 +124,7 @@ function helpText() {
 
 function sourcesText() {
   return [
-    "Источники Целебника:",
+    "Источники Спинолада:",
     "",
     "MedlinePlus, NCCIH, WHO, USDA FoodData Central, NIH ODS, Mayo Clinic, EMA/травные монографии, ВИЛАР и русские традиционные источники.",
     "",

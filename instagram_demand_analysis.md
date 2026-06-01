@@ -1,4 +1,4 @@
-# Instagram demand analysis for Telegram app
+﻿# Instagram demand analysis for Telegram app
 
 Source: user-provided performance data from Instagram account `@thesergeypopov`.
 
@@ -44,7 +44,7 @@ Use only three visible entry points in Telegram:
 2. "Что съесть?"
 3. "Что есть дома?"
 
-Reason: the Instagram data shows people respond to direct practical situations, not to a large encyclopedia. Too many rubrics will make the bot feel heavy. The app should behave like a smart народный целебник: user writes a problem or a product, and the app finds the useful path.
+Reason: the Instagram data shows people respond to direct practical situations, not to a large encyclopedia. Too many rubrics will make the bot feel heavy. The app should behave like a smart народный справочник самоподдержки: user writes a problem or a product, and the app finds the useful path.
 
 Best core scenario:
 

@@ -108,7 +108,7 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
   try {
     if (url.pathname === "/health") {
-      sendJson(res, 200, { ok: true, service: "celebnik", time: new Date().toISOString() });
+      sendJson(res, 200, { ok: true, service: "spinolad", time: new Date().toISOString() });
       return;
     }
     if (url.pathname === "/api/answer") {
@@ -131,7 +131,7 @@ const server = http.createServer(async (req, res) => {
 
 function startServer(customPort = port) {
   return server.listen(customPort, () => {
-    console.log(`Celebnik dev server: http://localhost:${customPort}`);
+    console.log(`Spinolad dev server: http://localhost:${customPort}`);
   });
 }
 

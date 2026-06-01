@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Целебник — рабочий прототип</title>
+  <title>Спинолад — рабочий прототип</title>
   <style>
     :root {
       --ink: #17201b;
@@ -183,16 +183,16 @@
     <header>
       <div class="avatar">Ц</div>
       <div>
-        <h1>Целебник</h1>
-        <p>Здоровье и энергия доступные всем</p>
+        <h1>Спинолад</h1>
+        <p>Мягкие программы для шеи, плеч и спины</p>
       </div>
     </header>
 
     <main id="chat">
       <div class="bubble">
-Целебник
+Спинолад
 
-Помогаю восстанавливать и поддерживать здоровье с помощью продуктов, трав, напитков, народных рецептов, простых действий и современных исследований.
+Помогаю мягко улучшать самочувствие шеи, плеч, спины и поясницы через короткие программы, трекинг и полезные привычки.
 
 Напишите запрос своими словами.
       </div>
@@ -234,7 +234,7 @@
       addBubble(q, "user");
       input.value = "";
       suggestions.innerHTML = "";
-      status.textContent = "Ищу в базе Целебника...";
+      status.textContent = "Ищу в базе Спинолада...";
       try {
         const response = await fetch(`/api/answer?q=${encodeURIComponent(q)}`);
         const json = await response.json();

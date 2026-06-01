@@ -1,8 +1,8 @@
 {
-  "name": "celebnik",
+  "name": "spinolad",
   "version": "0.1.0",
   "private": true,
-  "description": "Telegram-first MVP for Celebnik content and response engine.",
+  "description": "Telegram-first Spinolad bot for neck, shoulders, back and lower-back habit programs.",
   "scripts": {
     "check": "node scripts/check_data.js",
     "ask": "node src/cli.js",
